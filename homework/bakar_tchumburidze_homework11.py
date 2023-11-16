@@ -26,17 +26,17 @@ print(set_to_tuple(a,b))
 # 4 შექმენი ფუნქცია რომელიც მიიღებს მომხმარებლის სახელს და პაროლს, ასევე სიის სახელს. პაროლს გაუკეთებს ჰეშირებას და მონაცემს შეინახავს tuple ტიპის
 # მონაცემად გადაცემულ სიაში. შედეგი უნდა დააბრუნოს [("user1", "pass1")]
 
-import bcrypt
+# import bcrypt
 
 
-f_name = input("enter your name: ")
-password = input("enter your password: ") 
-li = []
-def user_info(f_n,passw,user): 
-    hashed_pass = bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt())
-    user.append((f_n,hashed_pass))
-    return user
+# f_name = input("enter your name: ")
+# password = input("enter your password: ") 
+# li = []
+# def user_info(f_n,passw,user): 
+#     hashed_pass = bcrypt.hashpw(passw.encode('utf-8'), bcrypt.gensalt())
+#     user.append((f_n,hashed_pass))
+#     return user
 
-user_info(f_name,password,li)
-print(li)
+# user_info(f_name,password,li)
+# print(li)
 
