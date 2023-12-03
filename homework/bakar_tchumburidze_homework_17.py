@@ -74,7 +74,6 @@ print(f"Car: {car1.brand} {car1.model} ({car1.year})")
 # # car1.brand = 3
 
 result = car1.count_attributes()
-print(result)
 
 print(car1.brand)
 

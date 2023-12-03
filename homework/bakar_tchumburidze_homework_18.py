@@ -1,73 +1,110 @@
-class Node:
-    def __init__(self, data):
+class ListNode:
+    """
+    A node in a singly-linked list.
+    """
+    def __init__(self, data=None, next=None):
         self.data = data
-        self.next = None
+        self.next = next
 
-class LinkedList:
+    def __repr__(self):
+        return repr(self.data)
+
+class SinglyLinkedList:
     def __init__(self):
+        """
+        Create a new singly-linked list.
+        Takes O(1) time.
+        """
         self.head = None
 
+    def __repr__(self):
+        """
+        Return a string representation of the list.
+        Takes O(n) time.
+
+        nodes ლისტში აგროვებს მნიშვნელობებს while ციკლის დახმარებით იქამდე სანამ curr არ გახდება none, ანუ სანამ
+        დაკავშირებულ სიას ბოლომდე არ ჩაივლის.
+        """
+        nodes = []
+        curr = self.head
+        while curr:
+            nodes.append(repr(curr))    #  nodes - სიაში ამატებს მნიშვნელობებს. მონაცემები იცვლება სტრინგ ტიპად
+            curr = curr.next
+
+        return '[' + ', '.join(nodes) + ']'  # აბრუნებს nodes-სიაში შეგროვებულ მონაცემებს, სიას დამსგავსებული ვისუალით
+
+    def prepend(self, data):
+        """
+        Insert a new element at the beginning of the list.
+        Takes O(1) time.
+        """
+        self.head = ListNode(data=data, next=self.head)
+
     def append(self, data):
-        new_node = Node(data)
+        """
+        Insert a new element at the end of the list.
+        Takes O(n) time.
+        """
         if not self.head:
-            self.head = new_node
+            self.head = ListNode(data=data)
             return
-        current = self.head
-        while current.next:
-            current = current.next
-        current.next = new_node
+        curr = self.head
+        while curr.next:
+            curr = curr.next
+        curr.next = ListNode(data=data)
 
-    def insert(self, data, position):
-        new_node = Node(data)
-        if position == 0:
-            new_node.next = self.head
-            self.head = new_node
-            return
-        current = self.head
-        count = 0
-        while current:
-            if count == position - 1:
-                new_node.next = current.next
-                current.next = new_node
-                return
-            current = current.next
-            count += 1
-        raise IndexError("Index out of range")
+    def find(self, key):
+        """
+        Search for the first element with `data` matching
+        `key`. Return the element or `None` if not found.
+        Takes O(n) time.
+        """
+        curr = self.head
+        while curr and curr.data != key:
+            curr = curr.next
+        return curr  # Will be None if not found
 
-    def delete(self, data):
-        current = self.head
-        if current is not None and current.data == data:
-            self.head = current.next
-            current = None
-            return
+    def remove(self, key):
+        """
+        Remove the first occurrence of `key` in the list.
+        Takes O(n) time.
+        """
+        # Find the element and keep a
+        # reference to the element preceding it
+        curr = self.head
         prev = None
-        while current:
-            if current.data == data:
-                break
-            prev = current
-            current = current.next
-        if current is None:
-            return
-        prev.next = current.next
-        current = None
+        while curr and curr.data != key:
+            prev = curr
+            curr = curr.next
+        # Unlink it from the list
+        if prev is None:
+            self.head = curr.next
+        elif curr:
+            prev.next = curr.next
+            curr.next = None
 
-    def display(self):
-        current = self.head
-        while current:
-            print(current.data, end=" -> ")
-            current = current.next
-        print("None")
+    def reverse(self):
+        """
+        Reverse the list in-place.
+        Takes O(n) time.
+        """
+        curr = self.head
+        prev_node = None
+        next_node = None
+        while curr:
+            next_node = curr.next
+            curr.next = prev_node
+            prev_node = curr
+            curr = next_node
+        self.head = prev_node
+linked_list = SinglyLinkedList()
+linked_list.append([3,6,7])
+# linked_list.append(1)
+linked_list.append(0)
+linked_list.append('2')
+linked_list.append(1)
+linked_list.append(True)
 
-# Example Usage:
-my_list = LinkedList()
-my_list.append(5)
-my_list.append(10)
-my_list.append(15)
-
-my_list.display()  # Output: 5 -> 10 -> 15 -> None
-
-my_list.insert(12, 2)
-my_list.display()  # Output: 5 -> 10 -> 12 -> 15 -> None
-
-my_list.delete(10)
-my_list.display()  # Output: 5 -> 12 -> 15 -> None
+test = linked_list.find([3,6,7])
+print(type(test))
+print(linked_list)
