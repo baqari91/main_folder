@@ -96,14 +96,14 @@ class SinglyLinkedList:
 
 
 linked_list = SinglyLinkedList()
-linked_list.append([3,6,7])
+linked_list.append([3, 6, 7])
 linked_list.append(0)
 linked_list.append('2')
-linked_list.append(1)
 linked_list.append(True)
-test = linked_list.find([3,6,7])
+linked_list.append(1)
+test = linked_list.find(1)
 
 print(linked_list)
-linked_list.remove('2')
-print(linked_list)
+
+print(test)
 

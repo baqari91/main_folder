@@ -54,24 +54,27 @@
 #
 #
 #
-# obj = Test()
-# print(obj.head)
+# # obj = Test()
+# # print(obj.head)
+#
+# class ListNode:
+#     def __init__(self, data=None):
+#         self.data = data
+#         self.next = None
+#
+#     def __repr__(self):
+#         return f'{self.data} {self.next}'
+# node1 = ListNode(10)
+# node2 = ListNode(20)
+# node3 = ListNode(30)
+#
+# node1.next = node2
+# node2.next = node3
+#
+# curr = node1  # Now curr points to the first node (node1)
+#
+# print(curr.data)  # This will print the data of the first node, which is 10
+# print(curr)  # This will print the data of the first node, which is 10
 
-class ListNode:
-    def __init__(self, data=None):
-        self.data = data
-        self.next = None
-
-    def __repr__(self):
-        return f'{self.data} {self.next}'
-node1 = ListNode(10)
-node2 = ListNode(20)
-node3 = ListNode(30)
-
-node1.next = node2
-node2.next = node3
-
-curr = node1  # Now curr points to the first node (node1)
-
-print(curr.data)  # This will print the data of the first node, which is 10
-print(curr)  # This will print the data of the first node, which is 10
+if 'j':
+    print('s')
