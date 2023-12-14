@@ -88,3 +88,24 @@ geo1 = Georgian.get_or_create_instance('Dato', 20)  # Doesn't recreate, uses the
 geo1 = Georgian.get_or_create_instance('Avto', 21)  # Creates a new instance with 'Avto'
 
 print(Georgian.all_people)
+
+
+# def edit_json_file():
+#     with open('data_json.json', 'r') as file:
+#         data = json.load(file)
+#
+#     key_to_update = input("enter your username: ")
+#     print(f'your name is: {data[key_to_update][0]} \n your age: {data[key_to_update][1]}')
+#
+#     if key_to_update in data:
+#         new_name = input('enter new name: ')
+#         data[key_to_update] = [new_name]
+#
+#         new_age = input('enter new age: ')
+#         data[key_to_update].append(new_age)
+#
+#     with open('data_json.json', 'w') as file:
+#         json.dump(data, file)
+#         print("new data is saved in a file 'data_json.json")
+#
+#     return data

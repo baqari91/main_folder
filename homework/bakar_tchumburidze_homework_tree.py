@@ -22,10 +22,10 @@ class TreeNode:
         while len(nodes_to_visit) > 0:
             current_node = nodes_to_visit.pop()  # Takes the last node in the list
             print(current_node.value)  # Prints the value of the current node
-            nodes_to_visit += current_node.children  # Adds children of the current node to the list
+            nodes_to_visit += current_node.children  # Adds children of the current node to the li+><st
 
 
-# Creating nodes
+# Creating nodesʔʔʔʔ
 root = TreeNode("root")  # Creates the root node
 child1 = TreeNode("child1")  # Creates child nodes
 child2 = TreeNode("child2")
@@ -41,7 +41,7 @@ child1.add_child(TreeNode("child1-ის შვილები 1"))
 child1.add_child(TreeNode("child1-ის შვილები 2"))
 
 child2.add_child(TreeNode("child2-ის შვილები"))
-child2.add_child(TreeNode("ცჰილ"))
+child3.add_child(TreeNode("ცჰილ"))
 
 child3.add_child(TreeNode("Gg"))
 child3.add_child(TreeNode("Gg"))

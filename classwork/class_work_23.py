@@ -1,6 +1,12 @@
 import pygame
 import sys
+from pygame import mixer
 
+
+clock = pygame.time.Clock()
+fps = 60
+
+mixer.init()
 pygame.init()
 
 info = pygame.display.Info()
@@ -17,12 +23,15 @@ green = (100, 255, 100)
 
 
 player_image = pygame.image.load("bee.png")
+background_image = pygame.transform.scale(pygame.image.load("background.png"), (width, height))
+
 
 
 class Player:
     def __init__(self, speed, size, health, image):
         self.size = size
         self.image = pygame.transform.scale(image, (self.size, self.size))
+        self.current_image = self.image
         self.rect = pygame.Rect(width/2, height/2, self.size, self.size)
         self.rect.center = [width/2, height/2]
         self.speed = speed
@@ -32,8 +41,19 @@ class Player:
 
 
     def draw_player(self):
+        if self.cur_speed_w < 0:
+            self.current_image = pygame.transform.flip(self.image, True, False)
+        if self.cur_speed_w > 0:
+            self.current_image = self.image
+        if self.cur_speed_h < 0:
+            self.current_image = pygame.transform.rotate(self.image, 90)
+        if self.cur_speed_h > 0:
+            self.current_image = pygame.transform.rotate(self.image, -90)
+
+
+
         # pygame.draw.rect(screen, green, self.rect)
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+        screen.blit(self.current_image, (self.rect.x, self.rect.y))
 
     def move_player(self):
         self.rect.x += self.cur_speed_w
@@ -53,12 +73,14 @@ class Player:
         self.draw_player()
         self.move_player()
 
-player = Player(1, 60, 100, player_image)
+player = Player(10, 60, 100, player_image)
 
 
 run = True
 while run:
-    screen.fill(red)
+    clock.tick(fps)
+    # screen.fill(red)
+    screen.blit(background_image, (0, 0))
     player.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
