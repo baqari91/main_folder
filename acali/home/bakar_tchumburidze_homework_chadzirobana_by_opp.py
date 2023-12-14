@@ -8,9 +8,9 @@ class Ship:
 
 class Game:
     computer_positions1 = [
-        ["Maverick", [3]], ["Gunner", [8, 9]], ["Matilda", [13, 14, 15]],
-        ["Maverick", [4]], ["Gunner", [10, 11]], ["Matilda", [16, 17, 18]],
-        ["Maverick", [5]], ["Gunner", [12, 13]], ["Matilda", [18, 19, 20]]
+        [Ship("Maverick", [3])], [Ship("Gunner", [8, 9])], [Ship("Matilda", [13, 14, 15])],
+        [Ship("Maverick", [4])], [Ship("Gunner", [10, 11])], [Ship("Matilda", [16, 17, 18])],
+        [Ship("Maverick", [5])], [Ship("Gunner", [12, 13])], [Ship("Matilda", [18, 19, 20])]
     ]
     computer = choice(computer_positions1)
     def __init__(self):
