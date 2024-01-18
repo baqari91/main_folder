@@ -64,12 +64,16 @@ try:
     cursor.execute(insert_into_area_city)
     cursor.execute(insert_into_customers)
     db_connector.commit()
-    print('tables created')
+    print('tables created:')
+    cursor.execute(select_tables)
+    result = cursor.fetchall()
+    for row in result:
+        print(row)
 except Exception as e:
     print(f"Error: {e}")
+finally:
+    cursor.close()
+    db_connector.close()
 
-cursor.execute(select_tables)
-result = cursor.fetchall()
-for row in result:
-    print(row)
+
 
