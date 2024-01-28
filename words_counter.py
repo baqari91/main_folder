@@ -25,7 +25,7 @@ for tuple_ in sorted_items:
 if second_highest_tuple is not None:
     print(f"The second-highest word in the text is: '{second_highest_tuple[0]}' and it repeats {second_highest_tuple[1]} times.")
 else:
-    print("No second-highest word found.")
+    print("No second-highest word found. ")
 
 
 
