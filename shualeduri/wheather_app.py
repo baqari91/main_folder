@@ -1,7 +1,9 @@
 import sys
 import requests
-from PyQt5.QtGui import QMovie, QIcon, QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QLineEdit, QPushButton, QMessageBox, QComboBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QMovie, QIcon, QPixmap, QFont
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QLineEdit, QPushButton, QMessageBox, QComboBox, \
+    QHBoxLayout
 
 
 class WeatherApp(QWidget):
@@ -12,13 +14,20 @@ class WeatherApp(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('Weather App')
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(100, 100, 450, 200)
+        # self.setStyleSheet("QLabel { font-size: 20pt;}")
+        # self.setStyleSheet("result_label_2 { font-size: 40pt; }")
+        self.new_font = QFont()
+        self.new_font.setPointSize(35)
+        self.font_result = QFont()
+        self.font_result.setPointSize(20)
+
         # self.setStyleSheet("background: #ff7e5f;")
 
         self.layout = QVBoxLayout()
 
         self.background_label = QLabel(self)
-        self.background_label.setFixedWidth(400)
+        self.background_label.setFixedWidth(450)
         self.background_label.setFixedHeight(225)
         self.movie = QMovie("default_animation.gif")
         self.background_label.setMovie(self.movie)
@@ -39,17 +48,33 @@ class WeatherApp(QWidget):
         self.search_button = QPushButton('Search')
         self.result_label = QLabel('')
         self.result_label_1 = QLabel('')
-
+        self.result_label_2 = QLabel('')
+        self.city_name = QLabel('')
+        self.result_layout = QHBoxLayout()
         self.search_button.clicked.connect(self.get_weather)
 
         self.layout.addWidget(self.background_label)
         self.layout.addWidget(self.city_label)
         self.layout.addWidget(self.city_combobox)
         self.layout.addWidget(self.search_button)
-        self.layout.addWidget(self.result_label_1)
-        self.layout.addWidget(self.result_label)
+
+
+        self.result_layout.addWidget(self.result_label_1)
+        self.result_layout.addWidget(self.result_label_2)
+        self.result_layout.addWidget(self.result_label)
+        self.layout.addWidget(self.city_name)
+        # self.layout.addWidget(self.result_label_1)
+        # self.layout.addWidget(self.result_label)
+        # self.result_label_2.setStyleSheet("padding-right: 0px;")
+        # self.result_label.setStyleSheet("padding-right: 0px;")
+        self.city_name.setStyleSheet("margin-left: 80px;")
+        self.result_layout.setAlignment(Qt.AlignHCenter)
+        # self.layout.setAlignment(Qt.AlignVCenter)
+
 
         self.setLayout(self.layout)
+        self.layout.addLayout(self.result_layout)
+
 
     def get_weather(self):
         city = self.city_combobox.currentText()
@@ -78,7 +103,7 @@ class WeatherApp(QWidget):
                         for chunk in response.iter_content(1024):
                             f.write(chunk)
 
-                    self.result_label_1.setText(f'<img src="{icon_code}.png" height="60" width="60"> hello')
+                    self.result_label_1.setText(f'<img src="{icon_code}.png" height="60" width="60">')
                 else:
                     QMessageBox.warning(self, 'Error', f'Icon download failed: {response.status_code}')
 
@@ -93,13 +118,17 @@ class WeatherApp(QWidget):
                 self.set_background_gif(gif_filename[0])
 
                 result_text = (
-                    f'City: {city_name}, {country}\n'
-                    f'Temperature: {temperature}°C\n'
-                    f'Description: {description}\n'
+                    f'{description}\n'
                     f'Humidity: {humidity}%\n'
                     f'Wind Speed: {wind_speed} m/s'
                 )
                 self.result_label.setText(result_text)
+                self.result_label_2.setText(f'{temperature}°C')
+                self.result_label_2.setFont(self.new_font)
+                self.result_label.setFont(self.font_result)
+                self.city_name.setText(f'{city_name}, {country}')
+                self.city_name.setFont(self.new_font)
+
 
 
             else:
