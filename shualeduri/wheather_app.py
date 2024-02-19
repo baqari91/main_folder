@@ -1,8 +1,7 @@
 import sys
 import requests
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QMovie, QIcon, QPixmap, QFont
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QLineEdit, QPushButton, QMessageBox, QComboBox, \
+from PyQt5.QtGui import QMovie, QFont
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QMessageBox, QComboBox, \
     QHBoxLayout
 
 
@@ -14,25 +13,18 @@ class WeatherApp(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('Weather App')
-        self.setGeometry(100, 100, 450, 200)
-        # self.setStyleSheet("QLabel { font-size: 20pt;}")
-        # self.setStyleSheet("result_label_2 { font-size: 40pt; }")
+        self.setGeometry(100, 100, 500, 200)
         self.new_font = QFont()
-        self.new_font.setPointSize(35)
+        self.new_font.setPointSize(30)
         self.font_result = QFont()
         self.font_result.setPointSize(20)
-
-        # self.setStyleSheet("background: #ff7e5f;")
-
         self.layout = QVBoxLayout()
-
         self.background_label = QLabel(self)
-        self.background_label.setFixedWidth(450)
+        self.background_label.setFixedWidth(500)
         self.background_label.setFixedHeight(225)
         self.movie = QMovie("default_animation.gif")
         self.background_label.setMovie(self.movie)
         self.movie.start()
-
         self.city_label = QLabel('Select city:')
         self.city_combobox = QComboBox()
         self.city_combobox.addItems(
@@ -57,24 +49,13 @@ class WeatherApp(QWidget):
         self.layout.addWidget(self.city_label)
         self.layout.addWidget(self.city_combobox)
         self.layout.addWidget(self.search_button)
-
-
         self.result_layout.addWidget(self.result_label_1)
         self.result_layout.addWidget(self.result_label_2)
         self.result_layout.addWidget(self.result_label)
         self.layout.addWidget(self.city_name)
-        # self.layout.addWidget(self.result_label_1)
-        # self.layout.addWidget(self.result_label)
-        # self.result_label_2.setStyleSheet("padding-right: 0px;")
-        # self.result_label.setStyleSheet("padding-right: 0px;")
-        self.city_name.setStyleSheet("margin-left: 80px;")
-        self.result_layout.setAlignment(Qt.AlignHCenter)
-        # self.layout.setAlignment(Qt.AlignVCenter)
-
 
         self.setLayout(self.layout)
         self.layout.addLayout(self.result_layout)
-
 
     def get_weather(self):
         city = self.city_combobox.currentText()
@@ -91,31 +72,33 @@ class WeatherApp(QWidget):
         try:
             response = requests.get(base_url, params=params)
             data = response.json()
-            print(response)
-            print(data)
 
             if response.status_code == 200:
                 icon_code = data['weather'][0]['icon']
                 icon_url = f'http://openweathermap.org/img/w/{icon_code}.png'
+                city_name = data['name']
+                country = data['sys']['country']
+                temperature = data['main']['temp']
                 response = requests.get(icon_url, stream=True)
+                # print(data)
+
                 if response.status_code == 200:
                     with open(f'{icon_code}.png', 'wb') as f:
                         for chunk in response.iter_content(1024):
                             f.write(chunk)
 
-                    self.result_label_1.setText(f'<img src="{icon_code}.png" height="60" width="60">')
+                    self.result_label_1.setText(
+                        f'{city_name}, {country}<br><img src="{icon_code}.png" height="40" width="40">      {temperature}°C ')
+                    self.result_label_1.setFont(self.new_font)
                 else:
                     QMessageBox.warning(self, 'Error', f'Icon download failed: {response.status_code}')
 
-                temperature = data['main']['temp']
                 description = data['weather'][0]['description']
                 humidity = data['main']['humidity']
                 wind_speed = data['wind']['speed']
-                country = data['sys']['country']
-                city_name = data['name']
 
                 gif_filename = self.get_background_gif(description.lower())
-                self.set_background_gif(gif_filename[0])
+                self.set_background_gif(gif_filename)
 
                 result_text = (
                     f'{description}\n'
@@ -123,13 +106,9 @@ class WeatherApp(QWidget):
                     f'Wind Speed: {wind_speed} m/s'
                 )
                 self.result_label.setText(result_text)
-                self.result_label_2.setText(f'{temperature}°C')
                 self.result_label_2.setFont(self.new_font)
                 self.result_label.setFont(self.font_result)
-                self.city_name.setText(f'{city_name}, {country}')
                 self.city_name.setFont(self.new_font)
-
-
 
             else:
                 message = data.get('message', 'Unknown error')
@@ -141,17 +120,21 @@ class WeatherApp(QWidget):
     @staticmethod
     def get_background_gif(weather_description):
         if 'clear' in weather_description:
-            return ['sky_blue.gif', 'clear.gif']
+            return 'sky_blue.gif'
         elif 'cloud' in weather_description:
-            return ['cloudy.gif', 'file.gif']
+            return 'cloudy.gif'
         elif 'rain' in weather_description:
-            return ['rain.gif', 'file.gif']
+            return 'rain.gif'
         elif 'mist' in weather_description:
-            return ['mist.gif', 'file.gif']
+            return 'mist.gif'
         elif 'snow' in weather_description:
-            return ['snow.gif', 'file.gif']
+            return 'snow.gif'
+        elif 'thunderstorm' in weather_description:
+            return 'thunderstorm.gif'
+        elif 'smoke' in weather_description:
+            return 'smoke.gif'
         else:
-            return ['default_animation.gif', 'clear.gif']
+            return 'default_animation.gif'
 
     def set_background_gif(self, gif_filename):
         self.movie.stop()
